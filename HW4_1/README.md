@@ -75,6 +75,8 @@ Since the server is running in hw4a, we will use the IPV4 address of hw4a as the
 
 Upon connection the console in both programs will then prompt the user to enter a short message, after pressing 'Enter' the message will be printed to the server's console, and any messages from the server's console will be printed to the client's console.
 
+To exit the chat, either use ctrl+C or use the phrase 'exit' in the chat.
+
 ## Cleaning the Lxc Workspace
 Another script was created to clean the lxc workspace from any images or containers present. Simple run the script as show below to clean.
 
