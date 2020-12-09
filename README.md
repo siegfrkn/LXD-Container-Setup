@@ -135,4 +135,3 @@ https://linuxcontainers.org/lxd/docs/master/image-handling
 https://www.oreilly.com/library/view/container-security/9781492056690/ch04.html
 https://blog.simos.info/how-to-make-your-lxd-containers-get-ip-addresses-from-your-lan-using-a-bridge/
 
-*/
