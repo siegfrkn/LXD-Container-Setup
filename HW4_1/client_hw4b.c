@@ -1,116 +1,120 @@
+// run as root, ./client_hw4b <IP address>
 
-#include <netdb.h> 
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <string.h> 
-#include <sys/socket.h> 
-#include <unistd.h>
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include <arpa/inet.h>
 #include <fcntl.h>
-
-#include <netinet/tcp.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <netdb.h> 
-  
-#include <stdio.h> 
-#include <sys/types.h> 
-#include <sys/socket.h> 
-#include <netinet/in.h> 
-#include <arpa/inet.h> 
-#include <netdb.h> 
-#include <unistd.h> 
-#include <string.h> 
-#include <stdlib.h> 
-#include <netinet/ip_icmp.h> 
-#include <time.h> 
-#include <fcntl.h> 
-#include <signal.h> 
-#include <time.h>
 #include <limits.h>
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-#include <netinet/tcp.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
 #include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/ip_icmp.h>
+#include <netinet/tcp.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <time.h>
+#include <unistd.h>
 
-#define MAX 80 
+// Define the max buffer size
+#define MAX 80
+
+// Define the port the server will run on
 #define PORT 80
-#define SA struct sockaddr 
 
-void func(int sockfd) 
-{ 
-    char buff[MAX]; 
-    int n; 
-    for (;;) { 
-        bzero(buff, sizeof(buff)); 
+// Define a struct for the socket
+#define SA struct sockaddr
+
+/* This function performs the "chat" betweent he client
+ * and the server.
+ */
+void chat(int sockfd)
+{
+    char buff[MAX];
+    int n;
+
+    // Run the chat in an infinite loop
+    for (;;)
+    {
+        // clear the buffer
+        bzero(buff, sizeof(buff));
+
+        // Client prompted for first message
         printf("Enter the string : "); 
-        n = 0; 
-        while ((buff[n++] = getchar()) != '\n') 
-            ; 
-        write(sockfd, buff, sizeof(buff)); 
-        bzero(buff, sizeof(buff)); 
-        read(sockfd, buff, sizeof(buff)); 
-        printf("From Server : %s", buff); 
-        if ((strncmp(buff, "exit", 4)) == 0) { 
-            printf("Client Exit...\n"); 
-            break; 
-        } 
-    } 
-} 
-  
-int main(int argc, char *argv[]) 
-{ 
-    int sockfd, connfd; 
-    struct sockaddr_in servaddr, cli; 
+        n = 0;
 
-    if(argc!=2) 
+        // Copy client message to server
+        while ((buff[n++] = getchar()) != '\n')
+        {
+            ;
+        }
+
+        // Send buffer to server
+        write(sockfd, buff, sizeof(buff));
+        bzero(buff, sizeof(buff));
+
+        // Read buffer from server and print
+        read(sockfd, buff, sizeof(buff));
+        printf("From Server : %s", buff);
+
+        // If message contains "exit" the chat will end
+        if ((strncmp(buff, "exit", 4)) == 0)
+        {
+            printf("Client Exit...\n");
+            break;
+        }
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    int sockfd, connfd;
+    struct sockaddr_in servaddr, cli;
+
+    // Must be passed an IP address as argument
+    if(argc!=2)
+    {
+        printf("\nFormat: ./client_hw4b < ipaddress>\n");
+        return 0;
+    }
+
+    // Create socket and verify, if fails set and print error
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1)
+    {
+        printf("socket creation failed...\n");
+        exit(0);
+    }
+    else
+    {
+        printf("Socket successfully created..\n");
+    }
+
+    // Clear the socket
+    bzero(&servaddr, sizeof(servaddr));
+
+    // Assign IP, PORT
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = inet_addr(argv[1]);
+    servaddr.sin_port = htons(PORT);
+
+    // Connect the client socket to the server socket
+    if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0)
     { 
-        printf("\nFormat: ./client_hw4b < ipaddress>\n"); 
-        return 0; 
-    } 
-  
-    // socket create and varification 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0); 
-    if (sockfd == -1) { 
-        printf("socket creation failed...\n"); 
-        exit(0); 
-    } 
+        printf("connection with the server failed...\n");
+        exit(0);
+    }
     else
-        printf("Socket successfully created..\n"); 
-    bzero(&servaddr, sizeof(servaddr)); 
-  
-    // assign IP, PORT 
-    servaddr.sin_family = AF_INET; 
-    servaddr.sin_addr.s_addr = inet_addr(argv[1]); 
-    servaddr.sin_port = htons(PORT); 
-  
-    // connect the client socket to server socket 
-    if (connect(sockfd, (SA*)&servaddr, sizeof(servaddr)) != 0) { 
-        printf("connection with the server failed...\n"); 
-        exit(0); 
-    } 
-    else
-        printf("connected to the server..\n"); 
-  
-    // function for chat 
-    func(sockfd); 
-  
-    // close the socket 
-    close(sockfd); 
-} 
+    {
+        printf("connected to the server..\n");
+    }
+
+    // Function for chatting between client and server
+    chat(sockfd);
+
+    // After chatting close the socket
+    close(sockfd);
+}
 
 
 /*
