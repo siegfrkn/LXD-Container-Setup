@@ -13,6 +13,13 @@ To run the containers, two command windows are needed. Run each of the following
 
 ```lxc exec hw4b -- unshare --mount --fork --pid --mount-proc /bin/bash```
 
+## Demonstrating Namespaces and Removed Binaries
+To demonstrate that the namespaces for pid, fork, and mount are still isolated, and that binaries have been removed, the following commands can be used.
+
+Show process id's in container: ```ps -a```
+Create a file in host root dir and show it is not in container: ```ls /```
+Try calling removed binaries: ```lsblk```, ```uname```
+
 ## Connecting to an Internet Server
 To demonstrate connecting to an internet server, a program has been written which both pings "www.google.com" and then executes a send/receive with the website. To run this file, execute the following commands in either container.
 
