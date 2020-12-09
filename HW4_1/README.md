@@ -44,19 +44,13 @@ Text will print to the window to indicate the server is running and waiting.
 
 Then, inside of container "hw4b" the client program will be run. This program takes an argument of the IP address of the server, which can be retrieved using the ```lxc list``` command which will give similar output as follows:
 
-```+------+---------+-----------------------+-----------------------------------------------+------------+-----------+```
-
-```| NAME |  STATE  |         IPV4          |                     IPV6                      |    TYPE    | SNAPSHOTS |```
-
-```+------+---------+-----------------------+-----------------------------------------------+------------+-----------+```
-
-```| hw4a | RUNNING | 10.241.195.226 (eth0) | fd42:789a:6bbe:ab48:216:3eff:fee3:e2ec (eth0) | PERSISTENT | 0         |```
-
-```+------+---------+-----------------------+-----------------------------------------------+------------+-----------+```
-
-```| hw4b | RUNNING | 10.241.195.110 (eth0) | fd42:789a:6bbe:ab48:216:3eff:fe5f:7436 (eth0) | PERSISTENT | 0         |```
-
-```+------+---------+-----------------------+-----------------------------------------------+------------+-----------+```
++------+---------+-----------------------+-----------------------------------------------+------------+-----------+
+| NAME |  STATE  |         IPV4          |                     IPV6                      |    TYPE    | SNAPSHOTS |
++------+---------+-----------------------+-----------------------------------------------+------------+-----------+
+| hw4a | RUNNING | 10.241.195.226 (eth0) | fd42:789a:6bbe:ab48:216:3eff:fee3:e2ec (eth0) | PERSISTENT | 0         |
++------+---------+-----------------------+-----------------------------------------------+------------+-----------+
+| hw4b | RUNNING | 10.241.195.110 (eth0) | fd42:789a:6bbe:ab48:216:3eff:fe5f:7436 (eth0) | PERSISTENT | 0         |
++------+---------+-----------------------+-----------------------------------------------+------------+-----------+
 
 Since the server is running in hw4a, we will use the IPV4 address of hw4a as the argument to run the client.
 
