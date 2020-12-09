@@ -1,0 +1,24 @@
+config:
+  limits.cpu: "1"
+  limits.cpu.allowance: 10%
+  limits.memory: 512MB
+  limits.memory.enforce: hard
+  security.nesting: "true"
+  security.privileged: "false"
+description: Limited LXD profile
+devices:
+  eth0:
+    name: eth0
+    nictype: bridged
+    parent: bridge0
+    type: nic
+  root:
+    limits.max: 1MB
+    limits.read: 1MB
+    limits.write: 1MB
+    path: /
+    pool: default2
+    type: disk
+name: limited_network_b
+used_by:
+- /1.0/containers/hw4b
