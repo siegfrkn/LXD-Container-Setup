@@ -97,40 +97,23 @@ Then, cleanup your existing container and image. Use the ```lxc image list``` to
 
 ```lxc image delete <whatever images are there>```
 
-lxc image import hw4_image.tar.gz --alias hw4_image
-lxc launch hw4_image hw4
+## Importing Container Image
+Use the following commands to import a conatainer image. Giving it an alias makes it easier to reference versus looking at a hash.
+
+```lxc image import hw4_image.tar.gz --alias hw4_image```
+
+Then, a new container using this image can be launched. In this case, the new container is named "hw4".
+
+```lxc launch hw4_image hw4```
+
+## Executing Bash in Container with Restricted Namespaces
+To run the new container with restricted namespaces for fork, pid, mount, and mount-proc, use the following command.
+
+```lxc exec hw4b -- unshare --mount --fork --pid --mount-proc /bin/bash```
 
 
-/var/lib/lxd/containers/hw3/rootfs
 
-lxc exec hw4 -- /bin/bash
-sudo unshare --mount --fork --pid --mount-proc /bin/bash
-sudo chroot /jailed /bin/bash
-
-lxc exec hw4 -- unshare --mount --fork --pid --mount-proc chroot /jailed /bin/bash
-
-lxc exec hw4 -- unshare --mount --fork --pid --mount-proc chroot /var/lib/lxd/containers/hw4/rootfs/jailed /bin/bash
-
-TO RUN THE CAPSULE
-./capsule.sh <tar file>
-
-TO TIME CREATE FILE AND SEE READ WRITE
-time ./create test 1
-
-TO TEST NAMESPACE LIMITS
-lxc exec hw4 -- /bin/bash
-ifconfig
-ps -a
-ipcs
-
-
-TO RUN CONTAINERS
-lxc exec hw4a -- unshare --mount --fork --pid --mount-proc /bin/bash
-lxc exec hw4b -- unshare --mount --fork --pid --mount-proc /bin/bash
-
-
-/*
-RESOURCES:
+## Resources
 https://linuxcontainers.org/lxc/getting-started/
 https://bobcares.com/blog/how-to-delete-lxc-container/
 http://www.fernandoalmeida.net/blog/how-to-limit-cpu-and-memory-usage-with-cgroups-on-debian-ubuntu/
