@@ -17,7 +17,9 @@ To run the containers, two command windows are needed. Run each of the following
 To demonstrate that the namespaces for pid, fork, and mount are still isolated, and that binaries have been removed, the following commands can be used.
 
 Show process id's in container: ```ps -a```
+
 Create a file in host root dir and show it is not in container: ```ls /```
+
 Try calling removed binaries: ```lsblk```, ```uname```
 
 ## Connecting to an Internet Server
